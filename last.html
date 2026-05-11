@@ -136,7 +136,7 @@
 </head>
 <body>
 <div class="gate-container">
-    <h1>ТИХАЯ КОМНАТА</h1>
+    <h1> ТИХАЯ КОМНАТА</h1>
     <div class="icon">⌛</div>
     <p>Ты собрал все осколки сигнала. Теперь остался последний шаг.</p>
     <p>Введи код, который ты получил из видео и стены обсерватории.</p>
@@ -152,7 +152,7 @@
 
     const encryptedData = "\u0013\u0010\u0011\u0014Q\u0003\u001b\u001c\u0016H\u0012\u001b\u0001\nH\u0011\u001a\n\u0011R\u001f\u0017R\u0018K\u0018\u0003\u0012\u001d\u0013S";
     
-    
+
     function xorDecrypt(data, key) {
         let result = "";
         for (let i = 0; i < data.length; i++) {
@@ -161,7 +161,7 @@
         return result;
     }
     
-    
+
     const keyInput = document.getElementById('keyInput');
     const unlockBtn = document.getElementById('unlockBtn');
     const resultDiv = document.getElementById('resultArea');
@@ -174,15 +174,16 @@
             return;
         }
         
-        
+ 
         const decrypted = xorDecrypt(encryptedData, userKey);
         
-        
-        if (decrypted === "discord.gg/") {
+
+        if (decrypted.startsWith("discord.gg/")) {
+            const inviteLink = `https://${decrypted}`;
             resultDiv.style.display = "block";
             resultDiv.innerHTML = `
                 <div class="welcome"> Путник, добро пожаловать... домой.</div>
-                <div class="link">Твоя дверь: <a href="https://${decrypted}" target="_blank">https://${decrypted}</a></div>
+                <div class="link">Твоя дверь: <a href="${inviteLink}" target="_blank">${inviteLink}</a></div>
                 <div style="margin-top: 15px; font-size: 12px;">Ты не один. Заходи, здесь тихо.</div>
             `;
         } else {
@@ -190,10 +191,12 @@
             resultDiv.innerHTML = "<span class='error'>❌ Ключ неверен. Расшифровка не дала ссылку. Проверь ключ и попробуй снова.</span>";
         }
     });
+    
 
     keyInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') unlockBtn.click();
     });
+    
 
     keyInput.focus();
 </script>

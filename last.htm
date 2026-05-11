@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Портал | вход в тихую комнату</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0c12;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at 20% 30%, #1a2a3a 0%, #0a0c12 100%);
+        }
+
+        .gate-container {
+            max-width: 550px;
+            width: 100%;
+            background: rgba(10, 15, 25, 0.85);
+            backdrop-filter: blur(5px);
+            border: 1px solid #5a8aba;
+            border-radius: 32px;
+            padding: 30px 25px;
+            box-shadow: 0 0 30px rgba(0, 50, 80, 0.4);
+            text-align: center;
+        }
+
+        h1 {
+            color: #aaccee;
+            font-weight: normal;
+            letter-spacing: 3px;
+            font-size: 22px;
+            border-bottom: 1px dashed #4a7a9a;
+            display: inline-block;
+            padding-bottom: 8px;
+            margin-bottom: 25px;
+        }
+
+        .icon {
+            font-size: 48px;
+            margin: 15px 0;
+            opacity: 0.7;
+        }
+
+        p {
+            color: #cceeff;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 15px 0;
+        }
+
+        input {
+            width: 100%;
+            background: #0f1820;
+            border: 1px solid #3a6a8a;
+            color: #e0f0ff;
+            font-family: monospace;
+            font-size: 18px;
+            padding: 12px;
+            margin: 20px 0;
+            border-radius: 40px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #8db5e5;
+            box-shadow: 0 0 8px #5a9aba;
+        }
+
+        button {
+            background: #1e2f3f;
+            border: 1px solid #5a8aba;
+            color: #e0f0ff;
+            font-family: monospace;
+            font-size: 16px;
+            padding: 10px 24px;
+            cursor: pointer;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #2e4a6a;
+            border-color: #8db5e5;
+            text-shadow: 0 0 4px #aaccee;
+        }
+
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(15, 26, 34, 0.7);
+            border-radius: 20px;
+            border-left: 4px solid #6a9aba;
+            font-size: 14px;
+            word-break: break-word;
+        }
+
+        .welcome {
+            color: #aaffaa;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .link a {
+            color: #8db5e5;
+            text-decoration: none;
+            border-bottom: 1px dotted #8db5e5;
+        }
+
+        .link a:hover {
+            color: #aaccee;
+            border-bottom: 1px solid #aaccee;
+        }
+
+        .error {
+            color: #ffaa88;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 10px;
+            color: #6a8aaa;
+        }
+    </style>
+</head>
+<body>
+<div class="gate-container">
+    <h1>ТИХАЯ КОМНАТА</h1>
+    <div class="icon">⌛</div>
+    <p>Ты собрал все осколки сигнала. Теперь остался последний шаг.</p>
+    <p>Введи код, который ты получил из видео и стены обсерватории.</p>
+
+    <input type="text" id="keyInput" placeholder="КЛЮЧ ДОСТУПА" autocomplete="off">
+    <button id="unlockBtn">АКТИВИРОВАТЬ</button>
+
+    <div id="resultArea" class="result" style="display: none;"></div>
+    <div class="footer"> ключ собирается из двух половин. не торопись.</div>
+</div>
+
+<script>
+
+    const encryptedData = "\u0013\u0010\u0011\u0014Q\u0003\u001b\u001c\u0016H\u0012\u001b\u0001\nH\u0011\u001a\n\u0011R\u001f\u0017R\u0018K\u0018\u0003\u0012\u001d\u0013S";
+    
+    
+    function xorDecrypt(data, key) {
+        let result = "";
+        for (let i = 0; i < data.length; i++) {
+            result += String.fromCharCode(data.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+        }
+        return result;
+    }
+    
+    
+    const keyInput = document.getElementById('keyInput');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const resultDiv = document.getElementById('resultArea');
+    
+    unlockBtn.addEventListener('click', () => {
+        const userKey = keyInput.value.trim();
+        if (userKey === "") {
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = "<span class='error'>❄️ Поле пусто. Введи ключ.</span>";
+            return;
+        }
+        
+        
+        const decrypted = xorDecrypt(encryptedData, userKey);
+        
+        
+        if (decrypted === "discord.gg/") {
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `
+                <div class="welcome"> Путник, добро пожаловать... домой.</div>
+                <div class="link">Твоя дверь: <a href="https://${decrypted}" target="_blank">https://${decrypted}</a></div>
+                <div style="margin-top: 15px; font-size: 12px;">Ты не один. Заходи, здесь тихо.</div>
+            `;
+        } else {
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = "<span class='error'>❌ Ключ неверен. Расшифровка не дала ссылку. Проверь ключ и попробуй снова.</span>";
+        }
+    });
+
+    keyInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') unlockBtn.click();
+    });
+
+    keyInput.focus();
+</script>
+</body>
+</html>

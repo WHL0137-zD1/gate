@@ -12,17 +12,34 @@
         }
 
         body {
-            background: #0a0c12;
             font-family: 'Courier New', monospace;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            background-image: radial-gradient(circle at 20% 30%, #1a2a3a 0%, #0a0c12 100%);
+            transition: background-image 0.8s ease-in-out;
+            background-image: url('images/closendore.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
         }
 
         .gate-container {
+            position: relative;
+            z-index: 2;
             max-width: 550px;
             width: 100%;
             background: rgba(10, 15, 25, 0.85);
@@ -32,6 +49,22 @@
             padding: 30px 25px;
             box-shadow: 0 0 30px rgba(0, 50, 80, 0.4);
             text-align: center;
+            transition: all 0.3s;
+        }
+
+
+        body.door-open {
+            background-image: url('images/liteinend.png');
+        }
+
+        body.door-open::before {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .gate-container.door-open {
+            background: rgba(5, 10, 20, 0.7);
+            border-color: #8db5e5;
+            box-shadow: 0 0 40px rgba(100, 200, 255, 0.3);
         }
 
         h1 {
@@ -135,8 +168,8 @@
     </style>
 </head>
 <body>
-<div class="gate-container">
-    <h1>ТИХАЯ КОМНАТА</h1>
+<div class="gate-container" id="gateContainer">
+    <h1> ТИХАЯ КОМНАТА</h1>
     <p>Ты собрал все осколки сигнала. Теперь остался последний шаг.</p>
     <p>Введи код, который ты получил из видео и стены обсерватории.</p>
 
@@ -144,7 +177,7 @@
     <button id="unlockBtn">АКТИВИРОВАТЬ</button>
 
     <div id="resultArea" class="result" style="display: none;"></div>
-    <div class="footer">🌠 ключ собирается из двух половин. не торопись.</div>
+    <div class="footer">ключ собирается из двух половин. не торопись.</div>
 </div>
 
 <script>
@@ -162,12 +195,13 @@
     const keyInput = document.getElementById('keyInput');
     const unlockBtn = document.getElementById('unlockBtn');
     const resultDiv = document.getElementById('resultArea');
+    const gateContainer = document.getElementById('gateContainer');
     
     unlockBtn.addEventListener('click', () => {
         const userKey = keyInput.value.trim();
         if (userKey === "") {
             resultDiv.style.display = "block";
-            resultDiv.innerHTML = "<span class='error'>Поле пусто. Введи ключ.</span>";
+            resultDiv.innerHTML = "<span class='error'> Поле пусто. Введи ключ.</span>";
             return;
         }
         
@@ -175,9 +209,13 @@
         
         if (decrypted.startsWith("discord.gg/")) {
             const inviteLink = `https://${decrypted}`;
+
+            document.body.classList.add('door-open');
+            gateContainer.classList.add('door-open');
+            
             resultDiv.style.display = "block";
             resultDiv.innerHTML = `
-                <div class="welcome">Путник, добро пожаловать... домой.</div>
+                <div class="welcome"> Путник, добро пожаловать... домой.</div>
                 <div class="link">Твоя дверь: <a href="${inviteLink}" target="_blank">${inviteLink}</a></div>
                 <div style="margin-top: 15px; font-size: 12px;">Ты не один. Заходи, здесь тихо.</div>
             `;

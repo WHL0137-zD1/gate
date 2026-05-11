@@ -136,8 +136,7 @@
 </head>
 <body>
 <div class="gate-container">
-    <h1> ТИХАЯ КОМНАТА</h1>
-    <div class="icon">⌛</div>
+    <h1>ТИХАЯ КОМНАТА</h1>
     <p>Ты собрал все осколки сигнала. Теперь остался последний шаг.</p>
     <p>Введи код, который ты получил из видео и стены обсерватории.</p>
 
@@ -145,14 +144,13 @@
     <button id="unlockBtn">АКТИВИРОВАТЬ</button>
 
     <div id="resultArea" class="result" style="display: none;"></div>
-    <div class="footer"> ключ собирается из двух половин. не торопись.</div>
+    <div class="footer">🌠 ключ собирается из двух половин. не торопись.</div>
 </div>
 
 <script>
 
-    const encryptedData = "\u0013\u0010\u0011\u0014Q\u0003\u001b\u001c\u0016H\u0012\u001b\u0001\nH\u0011\u001a\n\u0011R\u001f\u0017R\u0018K\u0018\u0003\u0012\u001d\u0013S";
+    const encryptedData = "U\u0004\u001bS\u0002AUC\u000fWB]\u0002Y\nA\u001fb\u0006%\u0012";
     
-
     function xorDecrypt(data, key) {
         let result = "";
         for (let i = 0; i < data.length; i++) {
@@ -161,7 +159,6 @@
         return result;
     }
     
-
     const keyInput = document.getElementById('keyInput');
     const unlockBtn = document.getElementById('unlockBtn');
     const resultDiv = document.getElementById('resultArea');
@@ -170,19 +167,17 @@
         const userKey = keyInput.value.trim();
         if (userKey === "") {
             resultDiv.style.display = "block";
-            resultDiv.innerHTML = "<span class='error'>❄️ Поле пусто. Введи ключ.</span>";
+            resultDiv.innerHTML = "<span class='error'>Поле пусто. Введи ключ.</span>";
             return;
         }
         
- 
         const decrypted = xorDecrypt(encryptedData, userKey);
         
-
         if (decrypted.startsWith("discord.gg/")) {
             const inviteLink = `https://${decrypted}`;
             resultDiv.style.display = "block";
             resultDiv.innerHTML = `
-                <div class="welcome"> Путник, добро пожаловать... домой.</div>
+                <div class="welcome">Путник, добро пожаловать... домой.</div>
                 <div class="link">Твоя дверь: <a href="${inviteLink}" target="_blank">${inviteLink}</a></div>
                 <div style="margin-top: 15px; font-size: 12px;">Ты не один. Заходи, здесь тихо.</div>
             `;
@@ -192,12 +187,10 @@
         }
     });
     
-
     keyInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') unlockBtn.click();
     });
     
-
     keyInput.focus();
 </script>
 </body>

@@ -171,13 +171,13 @@
 <div class="gate-container" id="gateContainer">
     <h1> ТИХАЯ КОМНАТА</h1>
     <p>Ты собрал все осколки сигнала. Теперь остался последний шаг.</p>
-    <p>Введи код, который ты получил из видео и стены обсерватории.</p>
+    <p>Введи код чтобы востановить последние координаты.</p>
 
     <input type="text" id="keyInput" placeholder="КЛЮЧ ДОСТУПА" autocomplete="off">
     <button id="unlockBtn">АКТИВИРОВАТЬ</button>
 
     <div id="resultArea" class="result" style="display: none;"></div>
-    <div class="footer">ключ собирается из двух половин. не торопись.</div>
+    <div class="footer">Не торопись.</div>
 </div>
 
 <script>
@@ -217,7 +217,7 @@
             resultDiv.innerHTML = `
                 <div class="welcome"> Путник, добро пожаловать... домой.</div>
                 <div class="link">Твоя дверь: <a href="${inviteLink}" target="_blank">${inviteLink}</a></div>
-                <div style="margin-top: 15px; font-size: 12px;">Ты не один. Заходи, здесь тихо.</div>
+                <div style="margin-top: 15px; font-size: 12px;">Ты не один. Заходи, здесь безопасно.</div>
             `;
         } else {
             resultDiv.style.display = "block";
